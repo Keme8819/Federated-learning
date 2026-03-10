@@ -297,6 +297,14 @@ y = df["Label"]
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X).astype(np.float32)
 
+
+import joblib
+
+# Save scaler
+joblib.dump(scaler, "feature_scaler.pkl")
+
+print("Scaler saved successfully!")
+
 X_train, X_test, y_train, y_test = train_test_split(
     X_scaled, y, test_size=0.2, stratify=y, random_state=42
 )
@@ -359,3 +367,18 @@ def plot_confusion_matrices(central, fed, fed_dp, epsilon_dp=None):
 
     plt.tight_layout()
     plt.show()
+
+
+
+# ============================
+# Save Final Global Model
+# ============================
+
+model_save_path = "global_federated_ids_model.pth"
+
+
+# Use torch.save() for PyTorch models
+torch.save(fed_model.state_dict(), model_save_path)
+
+print("\nGlobal Federated Model saved successfully!")
+print("Model path:", model_save_path)
